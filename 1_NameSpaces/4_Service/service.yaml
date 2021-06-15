@@ -1,0 +1,40 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kubernetes.io/change-cause: "Changes port to 110"  
+  name: deployment-test-np
+  labels:
+    app: back
+spec: 
+  replicas: 5
+  selector:
+    matchLabels:
+      app: pod-labelNP
+  template:
+    metadata:
+      labels:
+        app: pod-labelNP
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 110
+---
+#Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-testnp
+  labels:
+    app: front
+spec:
+  type: NodePort
+  selector:
+    app: pod-labelNP
+  ports:
+    - protocol: TCP
+      port: 8089
+      targetPort: 80

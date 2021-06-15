@@ -1,0 +1,41 @@
+--steps to generate a new k8s user credential, remember k8s don't store users or groups it only authenticate they.
+--Generar una key
+openssl genrsa -out jhonSRE.key 2048
+--Generar un CSR
+openssl req -new -key jhonSRE.key -out jhonSRE.csr -subj "/CN=jhonSRE/O=SRE"
+--Firmar un certificado con el CA del cluster
+openssl x509 -req -in jhonSRE.csr -CA C:\Users\zuni230669\.minikube\ca.crt -CAkey C:\Users\zuni230669\.minikube\ca.key -CAcreateserial -out jhonSRE.crt -days 500
+--revisar el certificado
+openssl x509 -in jhonSRE.crt -noout -text
+
+--desde un contenedor
+docker run --rm -it -v ${PWD}:/test   lwolf/kubectl_deployer:latest
+minikube service kubernetes -url
+kubectl config set-cluster minikube --server=https://127.0.0.1:32768 --certificate-authority=ca.crt
+
+minikube start --extra-config=apiserver.authorization-mode=RBAC
+[Environment]::SetEnvironmentVariable("KUBECONFIG", $HOME + "\.kube\config", [EnvironmentVariableTarget]::Machine)
+minikube start --insecure-registry --extra-config=apiserver.authorization-mode=RBAC
+kubectl api-resources | findstr pods
+
+kubectl api-resources
+
+
+--local en el minikube
+kubectl config set-credentials jhonSRE --client-certificate=jhonSRE.crt --client-key=jhonSRE.key
+---------------------------------
+On windows is necesary on C:
+https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/issues/63
+C:\> kubectl config set-credentials jhonSRE --client-certificate=C:\Users\zuni230669\.kube\jhonSRE.crt --client-key=C:\Users\zuni230669\.kube\jhonSRE.key
+----------------------------------
+
+kubectl config set-context jhonSRE --cluster=minikube --user=jhonSRE
+kubectl config use-context jhonSRE
+
+--verbs for RBAC resources
+https://kubernetes.io/docs/reference/access-authn-authz/authorization/#determine-the-request-verb
+
+
+
+
+
