@@ -10,7 +10,7 @@ kind: Namespace
 metadata:
     name: prod
     labels:
-    name: prod
+      name: prod
 ---
 apiVersion: apps/v1
 kind: Deployment

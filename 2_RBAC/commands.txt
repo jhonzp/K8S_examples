@@ -1,12 +1,29 @@
 --steps to generate a new k8s user credential, remember k8s don't store users or groups it only authenticate they.
+
+DEV
 --Generar una key
 openssl genrsa -out jhonSRE.key 2048
 --Generar un CSR
 openssl req -new -key jhonSRE.key -out jhonSRE.csr -subj "/CN=jhonSRE/O=SRE"
+
+--Codificar en base64
+$csrdev01 = get-content 'dev01.csr' -Encoding Byte 
+$base64 = [System.Convert]::ToBase64String($csrdev01)
+Set-Content -Path dev01base64.csr -Value $base64
+
+
+Administrador
 --Firmar un certificado con el CA del cluster
 openssl x509 -req -in jhonSRE.csr -CA C:\Users\zuni230669\.minikube\ca.crt -CAkey C:\Users\zuni230669\.minikube\ca.key -CAcreateserial -out jhonSRE.crt -days 500
 --revisar el certificado
 openssl x509 -in jhonSRE.crt -noout -text
+
+kubectl apply -f dev01csr.yaml
+kubectl get csr
+kubectl certificate approve mycsr
+ $csrdev01_admin = kubectl get csr mycsr -o jsonpath='{.status.certificate}'
+ Set-Content -Path dev01.crt -Value $csrdev01_admin
+
 
 --desde un contenedor
 docker run --rm -it -v ${PWD}:/test   lwolf/kubectl_deployer:latest
@@ -20,17 +37,30 @@ kubectl api-resources | findstr pods
 
 kubectl api-resources
 
+---En Linux
+echo 'stringB64' | base64 -d > file.crt
 
 --local en el minikube
 kubectl config set-credentials jhonSRE --client-certificate=jhonSRE.crt --client-key=jhonSRE.key
+copy .\dev01.key C:\Users\zuni230669\.kube
+copy .\dev01.crt C:\Users\zuni230669\.kube
+kubectl config set-credentials dev01 --client-certificate=C:\Users\zuni230669\.kube\dev01.crt --client-key=C:\Users\zuni230669\.kube\dev01.key
+
+
+
+kubectl config set-context dev01 --cluster=Devk8sCluster --user=dev01
+
+
 ---------------------------------
 On windows is necesary on C:
 https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure/issues/63
 C:\> kubectl config set-credentials jhonSRE --client-certificate=C:\Users\zuni230669\.kube\jhonSRE.crt --client-key=C:\Users\zuni230669\.kube\jhonSRE.key
 ----------------------------------
 
+kubectl config current-context
 kubectl config set-context jhonSRE --cluster=minikube --user=jhonSRE
 kubectl config use-context jhonSRE
+kubectl config get-contexts
 
 --verbs for RBAC resources
 https://kubernetes.io/docs/reference/access-authn-authz/authorization/#determine-the-request-verb
