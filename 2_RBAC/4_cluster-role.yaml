@@ -13,7 +13,7 @@ metadata:
   name: crb-pod-reader
 subjects:
 - kind: User
-  name: jhonSRE 
+  name: dev01 
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole

@@ -4,7 +4,7 @@ metadata:
   name: crb-admin
 subjects:
 - kind: User
-  name: jhonSRE 
+  name: monitor01 
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
