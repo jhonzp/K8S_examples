@@ -77,14 +77,14 @@
         kubectl get secrets -n prod
         kubectl describe secret default-token-sspjz -n prod
 #### * Relación entre un pod y un service account (seleccionamos un pod)       
-        kubectl describe pod deployment-prod-b7c99d94b-7h4sq -n prod 
-        kubectl exec -ti deployment-prod-b7c99d94b-7h4sq -n prod -- sh
+        kubectl describe pod deployment-prod-b7c99d94b-7h4sq -n prod
+        (verificar la ruta del mount del volumen) 
+        kubectl exec -ti deployment-prod-b7c99d94b-7h4sq -n prod -- sh        
 #### * Peticiones directas al Api de K8S 
 ####   (https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#list-pod-v1-core)
         Kubectl get svc
         kubectl get svc kubernetes
-        kubectl exec -ti deployment-prod-b7c99d94b-7h4sq -n prod -- sh
-        (verificar la ruta del mount del volumen)
+        kubectl exec -ti deployment-prod-b7c99d94b-7h4sq -n prod -- sh        
         apk add curl
         curl https://10.0.0.1/api/v1/namespaces/prod/pods --insecure
         curl https://10.0.0.1/api/v1 --insecure
