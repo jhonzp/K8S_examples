@@ -4,14 +4,12 @@
 #### Los namespaces permiten definir un Scope y hacer una separación lógica dentro de nuestro cluster de K8S.
 #### Nos facilita y permite aplicar reglas a este nivel sobre el uso de recursos, permisos entre otros.
 #### Pero mucho cuidado es solo una separación lógica, los recursos físicos del cluster se comparten entre todos.
-#### Como ya sabemos existen objetos básicos en K8s como Pod, Replica Set, Deployment al crear todos estos si no especificamos el namespace 
-#### quedaran en el namespace default.
+#### Como ya sabemos existen objetos básicos en K8s como Pod, Replica Set, Deployment al crear todos estos si no especificamos el namespace quedaran en el namespace default.
 
 ### Crear objetos de k8s sin especificar el ns.
 #### Realizar el Kubectl apply -f 
 #### de cada una de las carpetas e identificar el namespace con el que queda creado cada tipo de recurso.
-#### De esta manera se puede evidenciar que existe un namespace "default" por defecto bajo el que se crean los objetos  cuando no 
-#### especificamos el namespace.
+#### De esta manera se puede evidenciar que existe un namespace "default" por defecto bajo el que se crean los objetos  cuando no especificamos el namespace.
 
 ## 2_RBAC - Users Groups
 
