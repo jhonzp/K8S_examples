@@ -58,7 +58,7 @@
 #### * Configurar las credenciales tomando los archivos de la carpeta \.Kube 
         kubectl config set-credentials dev01 --client-certificate=C:\Users\zuni230669\.kube\dev01.crt --client-key=C:\Users\zuni230669\.kube\dev01.key
 #### * Configurar el nuevo Context dev01
-        kubectl config set-context dev01 --cluster=Devk8sCluster --user=dev0
+        kubectl config set-context dev01 --cluster=Devk8sCluster --user=dev01
 #### * Hacer switch al nuevo Context dev01 y probar la conexión.
         kubectl config use-context dev01
         kubectl get pods -n dev
